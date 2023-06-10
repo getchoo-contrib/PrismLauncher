@@ -46,6 +46,8 @@ configure_file(prismlauncher.manifest.in prismlauncher.manifest @ONLY)
 configure_file(prismlauncher.ico prismlauncher.ico COPYONLY)
 configure_file(${Launcher_SVGFileName} ${Launcher_SVGFileName} COPYONLY)
 
+configure_file(AppxManifest.xml.in AppxManifest.xml @ONLY)
+
 if(MSVC)
     set(Launcher_MSVC_Redist_NSIS_Section [=[
 !ifdef haveNScurl

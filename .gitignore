@@ -62,3 +62,6 @@ flatbuild
 
 # Snap
 *.snap
+
+# MSIX
+microsoft.system.package.metadata
