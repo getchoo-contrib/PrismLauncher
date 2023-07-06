@@ -40,13 +40,14 @@
 #include <QRegularExpression>
 #include <QtGlobal>
 
+#include "Application.h"
 #include "BuildConfig.h"
+#include "Commandline.h"
+#include "FileSystem.h"
+#include "InstanceAppContainer.h"
 #include "MangoHud.h"
 #include "launch/LaunchTask.h"
 #include "minecraft/MinecraftInstance.h"
-#include "FileSystem.h"
-#include "Commandline.h"
-#include "Application.h"
 
 #ifdef Q_OS_LINUX
 #include "gamemode_client.h"
@@ -175,6 +176,9 @@ void LauncherPartLaunch::executeTask()
     const auto xdgDbusProxyPath = MangoHud::getXDGDbusProxyBinary();
     platformSupportsSandboxing = true; //
     canSandbox = !bwrapPath.isEmpty() && !xdgDbusProxyPath.isEmpty();
+#elif defined(Q_OS_WINDOWS)
+    platformSupportsSandboxing = true;
+    canSandbox = true;
 #endif
 
     if (wantSandbox && platformSupportsSandboxing && !canSandbox) {
@@ -335,7 +339,8 @@ void LauncherPartLaunch::executeTask()
     }
 #endif
 
-    qDebug() << "main args" << args.join(' ');
+    auto main_args = args.join(' ');
+    qDebug() << "main args" << main_args;
 
     QString wrapperCommandStr = instance->getWrapperCommand().trimmed();
     if(!wrapperCommandStr.isEmpty())
@@ -361,7 +366,32 @@ void LauncherPartLaunch::executeTask()
     }
 
     if (!m_sideProcess.program().isEmpty())
+#ifdef Q_OS_LINUX
         m_sideProcess.start();
+#endif
+
+    //if (wantSandbox && canSandbox) {
+        emit logLine("Sandboxing stuff...", MessageLevel::Launcher);
+        shouldLaunchMainProcess = false;
+        auto id = minecraftInstance->id().toStdWString();
+        PCWSTR appContainerName = id.c_str();
+        PCWSTR displayName = id.c_str();
+
+        InstanceAppContainer appContainer(appContainerName, displayName);
+        emit logLine("Created appContainer", MessageLevel::Launcher);
+
+        QByteArray cmdLine = main_args.toLocal8Bit();
+        LPSTR cmd = cmdLine.data();
+        if (!appContainer.createAppContainer(cmd)) {
+          emit logLine("Failed to sandbox lol", MessageLevel::Error);
+        }
+        emit logLine("Sandboxed!", MessageLevel::Error);
+        //delete[] cmd;
+/*
+} else {
+        emit logLine("not sandboxing stuff...", MessageLevel::Launcher);
+    }
+    */
 
 
     if (shouldLaunchMainProcess)

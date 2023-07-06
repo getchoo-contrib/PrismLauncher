@@ -454,6 +454,7 @@ else()
     message(STATUS "Using system ghc_filesystem")
 endif()
 add_subdirectory(libraries/qdcss) # css parser
+add_subdirectory(libraries/mcexec)
 
 ############################### Built Artifacts ###############################
 

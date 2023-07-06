@@ -1168,6 +1168,7 @@ install(TARGETS ${Launcher_Name}
 )
 
 if(WIN32)
+    target_link_libraries(Launcher_logic mcexec)
     add_library(filelink_logic STATIC ${LINKEXE_SOURCES})
     target_include_directories(filelink_logic PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
     target_link_libraries(filelink_logic

@@ -147,7 +147,7 @@ void MinecraftPage::loadSettings()
     ui->sandboxingCheckBox->setChecked(s->get("EnableSandboxing").toBool());
     ui->bwrapArgsLineEdit->setText(s->get("BwrapExtraArgs").toString());
 
-#ifndef Q_OS_LINUX
+#if !defined(Q_OS_LINUX) && !defined(Q_OS_WIN32)
     ui->sandboxingGroupBox->setVisible(false);
 #endif
 }
