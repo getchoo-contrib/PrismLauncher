@@ -15,7 +15,6 @@ set(Launcher_Name "${Launcher_CommonName}" PARENT_SCOPE)
 set(Launcher_DisplayName "${Launcher_DisplayName}" PARENT_SCOPE)
 
 set(Launcher_AppID "org.prismlauncher.PrismLauncher")
-set(Launcher_SVGFileName "${Launcher_AppID}.svg")
 set(Launcher_Copyright "© 2022-2025 Prism Launcher Contributors\\n© 2021-2022 PolyMC Contributors\\n© 2012-2021 MultiMC Contributors")
 set(Launcher_Copyright_Mac "© 2022-2025 Prism Launcher Contributors, © 2021-2022 PolyMC Contributors and © 2012-2021 MultiMC Contributors" PARENT_SCOPE)
 set(Launcher_Copyright "${Launcher_Copyright}" PARENT_SCOPE)
@@ -24,15 +23,10 @@ set(Launcher_UserAgent "${Launcher_CommonName}/${Launcher_VERSION_NAME}" PARENT_
 set(Launcher_ConfigFile "prismlauncher.cfg" PARENT_SCOPE)
 set(Launcher_Git "https://github.com/PrismLauncher/PrismLauncher" PARENT_SCOPE)
 set(Launcher_AppID "${Launcher_AppID}" PARENT_SCOPE)
-set(Launcher_SVGFileName "${Launcher_SVGFileName}" PARENT_SCOPE)
 
 set(Launcher_Desktop "program_info/${Launcher_AppID}.desktop" PARENT_SCOPE)
 set(Launcher_mrpack_MIMEInfo "program_info/modrinth-mrpack-mime.xml" PARENT_SCOPE)
 set(Launcher_MetaInfo "program_info/${Launcher_AppID}.metainfo.xml" PARENT_SCOPE)
-set(Launcher_SVG "program_info/${Launcher_SVGFileName}" PARENT_SCOPE)
-set(Launcher_Branding_ICNS "program_info/prismlauncher.icns" PARENT_SCOPE)
-set(Launcher_Branding_ICO "program_info/prismlauncher.ico")
-set(Launcher_Branding_ICO "${Launcher_Branding_ICO}" PARENT_SCOPE)
 set(Launcher_Branding_WindowsRC "program_info/prismlauncher.rc" PARENT_SCOPE)
 set(Launcher_Branding_LogoQRC "program_info/prismlauncher.qrc" PARENT_SCOPE)
 
@@ -43,8 +37,6 @@ configure_file(${Launcher_AppID}.metainfo.xml.in ${Launcher_AppID}.metainfo.xml)
 configure_file(prismlauncher.rc.in prismlauncher.rc @ONLY)
 configure_file(prismlauncher.qrc.in prismlauncher.qrc @ONLY)
 configure_file(prismlauncher.manifest.in prismlauncher.manifest @ONLY)
-configure_file(prismlauncher.ico prismlauncher.ico COPYONLY)
-configure_file(${Launcher_SVGFileName} ${Launcher_SVGFileName} COPYONLY)
 
 if(MSVC)
     set(Launcher_MSVC_Redist_NSIS_Section [=[

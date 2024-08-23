@@ -53,6 +53,7 @@ stdenv.mkDerivation {
       ../CMakeLists.txt
       ../COPYING.md
 
+      ../assets
       ../buildconfig
       ../cmake
       ../launcher
