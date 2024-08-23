@@ -58,7 +58,7 @@ stdenv.mkDerivation {
       ../cmake
       ../launcher
       ../libraries
-      ../program_info
+      ../packaging
       ../tests
     ];
   };

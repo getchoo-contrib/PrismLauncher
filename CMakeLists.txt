@@ -372,10 +372,10 @@ endif()
 
 include(ECMQtDeclareLoggingCategory)
 
-####################################### Program Info #######################################
+####################################### Packaging #######################################
 
 set(Launcher_APP_BINARY_NAME "prismlauncher" CACHE STRING "Name of the Launcher binary")
-add_subdirectory(program_info)
+add_subdirectory(packaging)
 
 ####################################### Assets #######################################
 

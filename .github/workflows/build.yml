@@ -387,10 +387,10 @@ jobs:
 
           if [ -n '${{ secrets.APPLE_CODESIGN_ID }}' ]; then
             APPLE_CODESIGN_ID='${{ secrets.APPLE_CODESIGN_ID }}'
-            ENTITLEMENTS_FILE='../program_info/App.entitlements'
+            ENTITLEMENTS_FILE='../packaging/App.entitlements'
           else
             APPLE_CODESIGN_ID='-'
-            ENTITLEMENTS_FILE='../program_info/AdhocSignedApp.entitlements'
+            ENTITLEMENTS_FILE='../packaging/AdhocSignedApp.entitlements'
           fi
 
           sudo codesign --sign "$APPLE_CODESIGN_ID" --deep --force --entitlements "$ENTITLEMENTS_FILE" --options runtime "PrismLauncher.app/Contents/MacOS/prismlauncher"
@@ -497,7 +497,7 @@ jobs:
             Expand-Archive -Path NSISPlugins\NScurl.zip -DestinationPath NSISPlugins\NScurl
           }
           cd ${{ env.INSTALL_DIR }}
-          makensis -NOCD "${{ github.workspace }}/${{ env.BUILD_DIR }}/program_info/win_install.nsi"
+          makensis -NOCD "${{ github.workspace }}/${{ env.BUILD_DIR }}/packaging/win_install.nsi"
 
       - name: Sign installer (Windows)
         if: runner.os == 'Windows'
