@@ -486,24 +486,13 @@ jobs:
       - name: Package (Windows, installer)
         if: runner.os == 'Windows'
         run: |
-          if ('${{ matrix.nscurl_tag }}') {
-            New-Item -Name NSISPlugins -ItemType Directory
-            Invoke-Webrequest https://github.com/negrutiu/nsis-nscurl/releases/download/${{ matrix.nscurl_tag }}/NScurl.zip -OutFile NSISPlugins\NScurl.zip
-            $nscurl_hash = Get-FileHash NSISPlugins\NScurl.zip -Algorithm Sha256 | Select-Object -ExpandProperty Hash
-            if ( $nscurl_hash -ne "${{ matrix.nscurl_sha256 }}") {
-              echo "::error:: NSCurl.zip sha256 mismatch"
-              exit 1
-            }
-            Expand-Archive -Path NSISPlugins\NScurl.zip -DestinationPath NSISPlugins\NScurl
-          }
-          cd ${{ env.INSTALL_DIR }}
-          makensis -NOCD "${{ github.workspace }}/${{ env.BUILD_DIR }}/packaging/win_install.nsi"
+          wix build -arch ${{ matrix.architecture }} "${{ github.workspace }}/${{ env.BUILD_DIR }}/packaging/product.wxs" -out PrismLauncher.msi
 
       - name: Sign installer (Windows)
         if: runner.os == 'Windows'
         run: |
           if (Get-Content ./codesign.pfx){
-            SignTool sign /fd sha256 /td sha256 /f codesign.pfx /p '${{ secrets.WINDOWS_CODESIGN_PASSWORD }}' /tr http://timestamp.digicert.com PrismLauncher-Setup.exe
+            SignTool sign /fd sha256 /td sha256 /f codesign.pfx /p '${{ secrets.WINDOWS_CODESIGN_PASSWORD }}' /tr http://timestamp.digicert.com PrismLauncher.msi
           } else {
             ":warning: Skipped code signing for Windows, as certificate was not present." >> $env:GITHUB_STEP_SUMMARY
           }
@@ -603,7 +592,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: PrismLauncher-${{ matrix.name }}-Setup-${{ env.VERSION }}-${{ inputs.build_type }}
-          path: PrismLauncher-Setup.exe
+          path: PrismLauncher.msi
 
       - name: Upload binary tarball (Linux, portable, Qt 5)
         if: runner.os == 'Linux' && matrix.qt_ver != 6

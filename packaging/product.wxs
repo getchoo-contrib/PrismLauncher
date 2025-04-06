@@ -1,0 +1,35 @@
+﻿<?include $(sys.SOURCEFILEDIR)/config.wxi?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Package Manufacturer="$(var.manufacturer)" Name="$(var.productName)" Version="$(var.version)" Scope="perUser" UpgradeCode="$(var.upgradeCode)" Language="1033">
+        <Icon Id="LauncherIcon" SourceFile="$(var.launcherIconPath)" />
+
+        <!--
+        Removing the previous version of the launcher after the InstallInitialize phase
+        lets Windows rollback failed upgrades
+        -->
+        <MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallInitialize" />
+
+        <!-- Install launcher to %localappdata%\Programs\@Launcher_CommonName@ -->
+        <StandardDirectory Id="LocalAppDataFolder">
+            <Directory Name="Programs">
+                <Directory Id="LauncherFolder" Name="$(var.launcherCommonName)" FileSource=".">
+                    <File Source="$(var.launcherBinaryName).exe" KeyPath="yes" />
+                </Directory>
+            </Directory>
+        </StandardDirectory>
+
+        <MediaTemplate EmbedCab="yes" />
+
+        <!-- Look up info from our NSIS Installer -->
+        <Property Id="NSISUNINSTALL">
+            <RegistrySearch Id="NSISUNINSTALL" Type="raw" Root="HKCU" Key="$(var.NSISUninstallRegKey)" Name="UninstallString" />
+        </Property>
+
+        <!-- Run the previous uninstaller -->
+        <CustomAction Id="UninstallNSIS" Directory="LauncherFolder" ExeCommand="[NSISUNINSTALL] /S" Execute="immediate" Return="check" />
+
+        <InstallExecuteSequence>
+            <Custom Action="UninstallNSIS" Before="InstallValidate" Condition="NSISUNINSTALL AND NOT Installed" />
+        </InstallExecuteSequence>
+    </Package>
+</Wix>

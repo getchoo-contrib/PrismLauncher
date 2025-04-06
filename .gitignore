@@ -61,3 +61,8 @@ flatbuild
 
 # Snap
 *.snap
+
+# Wix (Windows MSI)
+*.wixpdb
+*.msi
+*.cab

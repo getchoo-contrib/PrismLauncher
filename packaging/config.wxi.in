@@ -1,0 +1,15 @@
+<Include>
+	<?define manufacturer = "@Launcher_DisplayName@" ?>
+	<?define productName = "@Launcher_DisplayName@" ?>
+	<?define version = "@Launcher_VERSION_NAME@" ?>
+
+	<?define launcherCommonName = "@Launcher_CommonName@" ?>
+	<?define launcherBinaryName = "@Launcher_APP_BINARY_NAME@" ?>
+	<?define launcherIconPath = "..\assets\prismlauncher.ico" ?>
+
+	<?define NSISUninstallRegKey = "Software\Microsoft\Windows\CurrentVersion\Uninstall\@Launcher_CommonName@" ?>
+	<?define NSISInstallRegKey = "Software\@Launcher_CommonName@" ?>
+
+	<!-- DO NOT CHANGE THIS!!!! -->
+	<?define upgradeCode = "5f332922-d299-49c7-b03b-06b9fbd1a13a" ?>
+</Include>
